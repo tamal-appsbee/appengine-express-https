@@ -7,7 +7,11 @@ module.exports = function (options) {
 
     return function yes(req, res, next) {
         let NODE_ENV = process.env.NODE_ENV || '';
-        let ignoreRequest = (NODE_ENV !== 'production' && req.url.indexOf('/_ah/health') > -1);
+        let ignoreRequest = ( NODE_ENV !== 'production' );
+        if(req.url.indexOf('/_ah/health') > -1){
+            ignoreRequest = true;
+        }
+        
         let secure = req.connection.encrypted || (req.get('X-Forwarded-Proto') === "https");
 
         if (!ignoreRequest) {
