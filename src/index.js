@@ -6,7 +6,8 @@ module.exports = function (options) {
     let includeSubDomains = options.includeSubDomains !== undefined ? options.includeSubdomains : true;
 
     return function yes(req, res, next) {
-        let ignoreRequest = (req.url.indexOf('/_ah/health') > -1);
+        let NODE_ENV = process.env.NODE_ENV || '';
+        let ignoreRequest = (NODE_ENV !== 'production' && req.url.indexOf('/_ah/health') > -1);
         let secure = req.connection.encrypted || (req.get('X-Forwarded-Proto') === "https");
 
         if (!ignoreRequest) {
